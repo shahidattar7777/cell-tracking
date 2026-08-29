@@ -1,0 +1,7 @@
+data/
+*.zarr
+*.geff
+weights/
+.venv/
+__pycache__/
+predictions/

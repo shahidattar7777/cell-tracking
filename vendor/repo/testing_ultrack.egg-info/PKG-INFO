@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: testing-ultrack
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: dask[distributed]>=2024.8.0
+Requires-Dist: geff>=1.2.0.1.1
+Requires-Dist: jupyterlab>=4.5.9
+Requires-Dist: kaggle>=1.7.4.5
+Requires-Dist: matplotlib>=3.9.4
+Requires-Dist: napari[all]>=0.5.6
+Requires-Dist: networkx>=3.6.1
+Requires-Dist: numpy>=2.0.2
+Requires-Dist: pandas>=2.3.3
+Requires-Dist: polars>=1.42.1
+Requires-Dist: pyyaml>=6.0.3
+Requires-Dist: scikit-image>=0.24.0
+Requires-Dist: scikit-learn>=1.6.1
+Requires-Dist: scipy>=1.13.1
+Requires-Dist: tifffile>=2026.7.14
+Requires-Dist: torch>=2.8.0
+Requires-Dist: torchvision>=0.23.0
+Requires-Dist: tqdm>=4.68.4
+Requires-Dist: tracksdata>=0.1.0rc6
+Requires-Dist: zarr<4,>=3.0.10
+Provides-Extra: ilp
+Requires-Dist: ilpy>=0.5.1; extra == "ilp"
+Requires-Dist: pyscipopt>=6.2.1; extra == "ilp"
+
+# Biohub Tracking Support Pack V1
+
+This artifact contains the learned inference code and weights required by the
+UNet + node-transformer + ILP submission notebooks. When present, it can also
+contain a separately trained full-frame center detector used only as an
+auxiliary node-rescue prior.
+
+Included:
+
+- `repo/`: inference/training source used by the notebook.
+- `weights/`: `unet_transformer/split_0/edge_predictor_best.pth` and `config.json`.
+- `source_scripts/`: local training/packaging scripts used to create the support pack.
+- `requirements-unet-ilp.txt`: Python dependencies to install separately.
+- `requirements-unet-ilp-kaggle-predownload.txt`: quote-free package list for Kaggle dependency helpers.
+- `kaggle_dependency_install_command.txt`: one-line Kaggle dependency input command.
+- `ARTIFACT_MANIFEST.json`: generated provenance and weight checksum.
+- `wheels/`: offline dependency wheels for code-submission reruns.
+
+
+The manifest includes a `compatibility` section that defines the shared
+coordinate contract:
+
+```text
+coordinate order: z, y, x
+coordinate unit:  original voxel
+voxel scale:      z=1.625, y=x=0.40625 microns/voxel
+```
+
+If `weights/full_frame_center/` exists, the detector outputs are calibrated by:
+
+```text
+gate_summary.json
+gate_threshold_metrics.csv
+gate_frame_metrics.csv
+gate_peak_samples.csv
+```
+
+These files are sparse-label calibration features. They are intended for
+conservative node-rescue gates, not as complete-cell leaderboard estimates.
+
+Kaggle dependency input command:
+
+```bash
+pip install tracksdata zarr>=3.0.10,<4 pyscipopt geff ilpy polars blosc2 dask imagecodecs pyarrow rustworkx sqlalchemy
+```
+
+Do not add quotes around `zarr>=3.0.10,<4` in Kaggle's dependency input.

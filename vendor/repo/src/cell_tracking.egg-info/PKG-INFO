@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: cell-tracking
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: dask[distributed]>=2024.8.0
+Requires-Dist: geff>=1.2.0.1.1
+Requires-Dist: jupyterlab>=4.5.9
+Requires-Dist: kaggle>=1.7.4.5
+Requires-Dist: matplotlib>=3.9.4
+Requires-Dist: napari[all]>=0.5.6
+Requires-Dist: networkx>=3.6.1
+Requires-Dist: numpy>=2.0.2
+Requires-Dist: pandas>=2.3.3
+Requires-Dist: pyyaml>=6.0.3
+Requires-Dist: scikit-image>=0.24.0
+Requires-Dist: scikit-learn>=1.6.1
+Requires-Dist: scipy>=1.13.1
+Requires-Dist: tifffile>=2026.7.14
+Requires-Dist: torch>=2.8.0
+Requires-Dist: torchvision>=0.23.0
+Requires-Dist: tqdm>=4.68.4
+Requires-Dist: tracksdata>=0.1.0rc6
+Requires-Dist: zarr<4,>=3.0.10
+Provides-Extra: ilp
+Requires-Dist: ilpy>=0.5.1; extra == "ilp"
+Requires-Dist: pyscipopt>=6.2.1; extra == "ilp"
