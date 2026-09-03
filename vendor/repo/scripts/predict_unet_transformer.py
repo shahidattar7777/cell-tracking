@@ -22,10 +22,11 @@ from tqdm import tqdm
 
 import tracksdata as td
 
-from src.biohub_tracking.io import open_dataset, save_graph
 
+from src.biohub_tracking.io import open_dataset, save_graph
 # Import model and helpers from companion training script.
 sys.path.insert(0, str(Path(__file__).parent))
+
 from train_unet_transformer import (
     DEFAULT_METHOD,
     UNetNodeTransformer,

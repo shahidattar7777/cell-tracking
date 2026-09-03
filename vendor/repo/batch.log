@@ -1,0 +1,185 @@
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+All checks passed. Running 20 videos.
+Started: Wed, Sep  2, 2026  5:01:31 PM
+
+=== [1/20] 6bba_2540cd90  (17:01:31) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 3483 coords, 3433 edges
+out: [(1, 3324), (2, 53), (3, 1)]
+in:  [(1, 3377), (2, 28)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [2/20] 6bba_fbc898dc  (17:08:04) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 5661 coords, 5617 edges
+out: [(1, 5016), (2, 276), (3, 15), (4, 1)]
+in:  [(1, 5159), (2, 229)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [3/20] 6bba_b693381b  (17:14:44) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 6880 coords, 6678 edges
+out: [(1, 5999), (2, 289), (3, 27), (4, 5)]
+in:  [(1, 6278), (2, 200)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [4/20] 6bba_4f99ce20  (17:21:49) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 5982 coords, 5817 edges
+out: [(1, 5202), (2, 280), (3, 17), (4, 1)]
+in:  [(1, 5479), (2, 169)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [5/20] 6bba_c27cba08  (17:29:47) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 7223 coords, 7081 edges
+out: [(1, 6338), (2, 332), (3, 25), (4, 1)]
+in:  [(1, 6633), (2, 224)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [6/20] 6bba_6feeb0b1  (17:38:22) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 7931 coords, 7723 edges
+out: [(1, 6910), (2, 381), (3, 17)]
+in:  [(1, 7158), (2, 281), (3, 1)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [7/20] 6bba_6feb10f0  (17:44:10) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 14696 coords, 14166 edges
+out: [(1, 10691), (2, 1548), (3, 118), (4, 5), (5, 1)]
+in:  [(1, 12184), (2, 991)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [8/20] 6bba_312f0dc3  (17:50:35) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 10761 coords, 10408 edges
+out: [(1, 9222), (2, 543), (3, 29), (4, 2), (5, 1)]
+in:  [(1, 9688), (2, 360)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [9/20] 6bba_207c6aaf  (17:58:18) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 25627 coords, 26816 edges
+out: [(1, 17632), (2, 3970), (3, 392), (4, 17)]
+in:  [(1, 21147), (2, 2833), (3, 1)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [10/20] 44b6_db3c847b  (18:09:08) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 17279 coords, 17017 edges
+out: [(1, 14322), (2, 1246), (3, 65), (4, 2)]
+in:  [(1, 15519), (2, 749)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [11/20] 44b6_587a1e22  (18:16:41) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 19549 coords, 18987 edges
+out: [(1, 17827), (2, 554), (3, 16), (4, 1)]
+in:  [(1, 18491), (2, 248)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [12/20] 6bba_283bf9f1  (18:26:03) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 23384 coords, 23026 edges
+out: [(1, 20582), (2, 1174), (3, 32)]
+in:  [(1, 21406), (2, 810)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [13/20] 6bba_48816121  (18:33:29) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 26838 coords, 26557 edges
+out: [(1, 23895), (2, 1287), (3, 28), (4, 1)]
+in:  [(1, 24885), (2, 836)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [14/20] 44b6_8f5ab931  (18:39:25) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 29321 coords, 28824 edges
+out: [(1, 23751), (2, 2389), (3, 93), (4, 4)]
+in:  [(1, 26219), (2, 1301), (3, 1)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [15/20] 6bba_f8ffd5e7  (18:44:15) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 35014 coords, 34307 edges
+out: [(1, 29474), (2, 2188), (3, 139), (4, 10)]
+in:  [(1, 31777), (2, 1265)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [16/20] 44b6_c8e2a523  (18:49:02) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 28833 coords, 27819 edges
+out: [(1, 25586), (2, 1064), (3, 31), (4, 3)]
+in:  [(1, 27121), (2, 349)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [17/20] 44b6_668e0cc7  (18:53:57) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 35733 coords, 34516 edges
+out: [(1, 31553), (2, 1382), (3, 52), (4, 7), (5, 3)]
+in:  [(1, 33308), (2, 604)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [18/20] 44b6_eb2880fc  (18:59:41) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 39475 coords, 37536 edges
+out: [(1, 33341), (2, 2008), (3, 57), (4, 2)]
+in:  [(1, 35678), (2, 929)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [19/20] 44b6_551a5dba  (19:07:14) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 33725 coords, 32144 edges
+out: [(1, 25353), (2, 3092), (3, 186), (4, 11), (5, 1)]
+in:  [(1, 29408), (2, 1368)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+=== [20/20] 6bba_57b7cc1e  (19:12:55) ===
+warning: `VIRTUAL_ENV=C:/Users/shahi/OneDrive/Documents/cell_tracking/cell-tracking/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Active device: cpu
+Fold 0: 1 datasets | weights=weights\unet_transformer\split_0\edge_predictor_best.pth | device=cpu | window_size=2 | pool_kernel_um=3.0
+build_graph: 98040 coords, 100518 edges
+out: [(1, 71186), (2, 12770), (3, 1148), (4, 82), (5, 4)]
+in:  [(1, 84692), (2, 7910), (3, 2)]
+Saved 1 predictions to C:\Users\shahi\OneDrive\Documents\cell_tracking\cell-tracking\vendor\repo\predictions\shahi\unet_transformer\split_0
+
+Finished: Wed, Sep  2, 2026  7:22:57 PM
