@@ -6,7 +6,8 @@ set -euo pipefail
 
 DATA_DIR="C:/Users/shahi/OneDrive/Documents/cell_tracking/data/biohub-cell-tracking-during-development/train"
 WEIGHTS="weights/unet_transformer/split_0/edge_predictor_best.pth"
-METHOD="unet_transformer"
+# METHOD="unet_transformer"
+
 VAL_JSON="val20.json"
 
 # --- sanity checks: fail loudly before burning hours ---
@@ -28,6 +29,7 @@ echo "Started: $(date)"
 
 i=0
 for stem in $STEMS; do
+  METHOD="ilp_app2.0"
   i=$((i + 1))
   echo ""
   echo "=== [$i/$TOTAL] $stem  ($(date +%H:%M:%S)) ==="
@@ -35,7 +37,9 @@ for stem in $STEMS; do
     --weights "$WEIGHTS" \
     --method "$METHOD" \
     --debug-video "$DATA_DIR/$stem" \
-    --use-ilp
+    --use-ilp \
+    --ilp-appearance-weight 2.0 \
+    --ilp-disappearance-weight 2.0
 done
 
 echo ""

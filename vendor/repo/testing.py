@@ -7,6 +7,7 @@ import tracksdata as td
 import polars as pl
 from pathlib import Path
 import json
+import numpy as np
 
 # name = "6bba_0c7fa718"
 # pred_path = "/Users/shahidattar/Downloads/archive/repo/predictions/shahidattar/unet_transformer/split_0/6bba_0c7fa718.geff"
@@ -100,8 +101,65 @@ gt_to_pred = dict(zip(matched["match_node_id"], matched["node_id"]))
 gt_edges = ds.tracks.edge_list()
 print(len(gt_to_pred), len(gt_edges))
 
+pred_to_gt = dict(zip(matched["node_id"], matched["match_node_id"]))
+
+tp_edges = ea.filter(pl.col("matched_edge_mask"))
+tp_gt_pairs = {
+    (pred_to_gt[s], pred_to_gt[t])
+    for s, t in zip(tp_edges["source_id"], tp_edges["target_id"])
+}
+
+fn_edges = [(s, t) for s, t in gt_edges if (s, t) not in tp_gt_pairs]
+# print(len(fn_edges), len(tp_gt_pairs))
+
+gt_to_pred = dict(zip(matched["match_node_id"], matched["node_id"]))
+
+both_found = [(s, t) for s, t in fn_edges if s in gt_to_pred and t in gt_to_pred]
+# print(len(both_found))
+
+# for gs, gt_ in both_found:
+#     ps, pt = gt_to_pred[gs], gt_to_pred[gt_]
+#     out = ea.filter(pl.col("source_id") == ps)
+#     inn = ea.filter(pl.col("target_id") == pt)
+#     print(gs, gt_, "| src linked to:", out["target_id"].to_list(),
+#           "| tgt parent:", inn["source_id"].to_list())
 
 
+scale = np.array(ds.scale[-3:])   # (z, y, x) µm per voxel
+
+coords = {
+    r["node_id"]: (r["z"], r["y"], r["x"])
+    for r in na.iter_rows(named=True)
+}
+
+# for gs, gt_ in both_found:
+#     ps, pt = gt_to_pred[gs], gt_to_pred[gt_]
+
+#     out = ea.filter(pl.col("source_id") == ps)
+#     if len(out) == 0:
+#         continue   # source unlinked — nothing to compare
+
+#     true_d = np.linalg.norm(
+#         (np.array(coords[ps]) - np.array(coords[pt])) * scale
+#     )
+#     chosen_d = out["edge_dist"].to_list()
+#     chosen_p = out["edge_prob"].to_list()
+#     print(f"{gs}: true={true_d:.2f}  chosen={[f'{d:.2f}' for d in chosen_d]}  prob={[f'{p:.3f}' for p in chosen_p]}")
+
+
+for gs, gt_ in both_found:
+    ps, pt = gt_to_pred[gs], gt_to_pred[gt_]
+
+    inn = ea.filter(pl.col("target_id") == pt)
+    if len(inn) == 0:
+        continue   # target orphaned — already covered by the first query
+
+    true_d = np.linalg.norm(
+        (np.array(coords[ps]) - np.array(coords[pt])) * scale
+    )
+    chosen_d = inn["edge_dist"].to_list()
+    chosen_p = inn["edge_prob"].to_list()
+    print(f"{gs}: true={true_d:.2f}  chosen={[f'{d:.2f}' for d in chosen_d]}  prob={[f'{p:.3f}' for p in chosen_p]}")
 
 
 # .........................................
@@ -130,3 +188,6 @@ print(len(gt_to_pred), len(gt_edges))
 
 # print(Path("/storage"))
 # .............................................
+
+#.......................................................
+#Processing and scoring 20 batch predictions using score run
