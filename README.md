@@ -35,7 +35,7 @@ Six further hypotheses were tested and refuted, each decided by a measurement
 costing hours rather than an implementation costing days. The refutations are
 the more useful half of this document.
 
-![hypotheses](charts/hypotheses.png)
+![hypotheses](vendor/repo/charts/hypotheses.png)
 
 ---
 
