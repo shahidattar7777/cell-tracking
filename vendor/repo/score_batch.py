@@ -18,7 +18,7 @@ DATA_DIR = Path(
     r"C:\Users\shahi\OneDrive\Documents\cell_tracking\data"
     r"\biohub-cell-tracking-during-development\train"
 )
-PRED_DIR = Path(r"predictions\shahi\unet_transformer\split_0")
+PRED_DIR = Path(r"predictions\shahi\ilp_app2.0\split_0")
 VAL_JSON = Path("val20.json")
 # -------------------------------------------------------------------------
 

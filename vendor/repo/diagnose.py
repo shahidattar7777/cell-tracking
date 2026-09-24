@@ -154,9 +154,25 @@ def classify_fn(pred, ds):
     print(f"\nwrote fn_{STEM}.csv")
     return df
 
+def check_distance_bias(pred):
+    ea = pred.edge_attrs()
+    tp = ea.filter(pl.col("matched_edge_mask"))
+    d_um = tp["edge_dist"].to_numpy() * 1.625
+
+    print("\n=== distance bias ===")
+    print(f"TP distances (µm): p10 {np.percentile(d_um,10):.2f}  "
+          f"median {np.percentile(d_um,50):.2f}  "
+          f"p90 {np.percentile(d_um,90):.2f}  max {d_um.max():.2f}")
+    print(f"TP beyond 5 µm: {(d_um>5).sum()}/{len(d_um)}")
+    print(f"TP beyond 7 µm: {(d_um>7).sum()}/{len(d_um)}")
+
+    all_d = ea["edge_dist"].to_numpy() * 1.625
+    all_p = ea["edge_prob"].to_numpy()
+    print(f"corr(edge_prob, edge_dist) = {np.corrcoef(all_d, all_p)[0,1]:.3f}")
 
 if __name__ == "__main__":
     STEM = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_STEM
     pred, ds, er = load(STEM)
-    check_scaling(pred, ds)
-    classify_fn(pred, ds)
+    # check_scaling(pred, ds)
+    # classify_fn(pred, ds)
+    check_distance_bias(pred)

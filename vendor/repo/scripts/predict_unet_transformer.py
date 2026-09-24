@@ -324,6 +324,8 @@ def predict_video(
         Shape (N, 4) — columns [t, z, y, x] in original resolution.
     edges : list of (src_idx, tgt_idx, prob, distance) tuples
     """
+    
+    node_feats: dict[int, np.ndarray] = {}
     ds = open_dataset(ds_path, normalize=False, load_image=False, downsample=downsample)
     if "0.001" not in ds.quantiles or "0.999" not in ds.quantiles:
         raise ValueError(f"Zarr attrs missing image_statistics.quantiles for {ds_path}")
@@ -452,6 +454,15 @@ def predict_video(
             unet_feat_tgt = model._index_features(
                 unet_out[:, f_idx + 1], p_coords_tgt, p_mask_tgt,
             )
+
+            # f_src = unet_feat_src[0].detach().cpu().numpy()   # (n_src, C)
+            # f_tgt = unet_feat_tgt[0].detach().cpu().numpy()   # (n_tgt, C)
+            # for k, gk in enumerate(idx_src):
+            #     node_feats.setdefault(int(gk), f_src[k])
+            # for k, gk in enumerate(idx_tgt):
+            #     node_feats.setdefault(int(gk), f_tgt[k])
+
+
             edge_logits_pair = model.predict_edges(
                 unet_feat_src, unet_feat_tgt,
                 p_coords_src * ds_arr_t, p_coords_tgt * ds_arr_t,
@@ -502,6 +513,16 @@ def predict_video(
     coords = coords.astype(np.float32)
     coords[:, 1:] *= ds_arr
     coords = coords.astype(np.int16)
+    
+    # import numpy as _np
+    # n_nodes = len(coords)
+    # C = len(next(iter(node_feats.values())))
+    # feat_arr = _np.zeros((n_nodes, C), dtype=_np.float32)
+    # for gi, v in node_feats.items():
+    #     feat_arr[gi] = v
+    # _np.savez_compressed(
+    #     Path(ds_path).name + "_feats.npz", feats=feat_arr, coords=coords,
+    # )
     return coords, all_edges
 
 
@@ -543,7 +564,7 @@ def predict(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+    print("DEBUG", torch.__version__, torch.cuda.is_available())
     if torch.cuda.is_available():
         device = torch.device("cuda")
     elif torch.backends.mps.is_available():
@@ -651,6 +672,10 @@ def main() -> None:
     parser.add_argument("--ilp-division-weight", type=float, default=1.0,
                         help="ILP: cost of a division; lower to allow more splits (default 1.0).")
 
+    parser.add_argument("--pool-kernel-um", type=float,default=None,
+                        help="NMS radius for detection peaks, in micrometres.")
+    parser.add_argument("--threshold", type=float,default=None,
+                            help="NMS radius for detection peaks, in micrometres.")
     args = parser.parse_args()
 
     from dataspec import DATASET_PATH
@@ -668,6 +693,8 @@ def main() -> None:
         ilp_appearance_weight=args.ilp_appearance_weight,
         ilp_disappearance_weight=args.ilp_disappearance_weight,
         ilp_division_weight=args.ilp_division_weight,
+        pool_kernel_um = args.pool_kernel_um,
+        threshold= args.threshold
     )
 
     folds = range(5) if args.split == "all" else [int(args.split)]

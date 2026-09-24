@@ -39,7 +39,7 @@ for stem in $STEMS; do
     --debug-video "$DATA_DIR/$stem" \
     --use-ilp \
     --ilp-appearance-weight 2.0 \
-    --ilp-disappearance-weight 2.0
+    --ilp-disappearance-weight 2.0 
 done
 
 echo ""

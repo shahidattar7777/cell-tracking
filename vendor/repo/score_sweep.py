@@ -14,15 +14,18 @@ DATA_DIR = Path(
     r"\biohub-cell-tracking-during-development\train"
 )
 PRED_ROOT = Path("predictions/shahi")
-STEMS = ["6bba_207c6aaf", "6bba_57b7cc1e", "6bba_6feb10f0"]
-
+# STEMS = ["6bba_207c6aaf", "6bba_57b7cc1e", "6bba_6feb10f0"]
+STEMS = ["6bba_207c6aaf", "6bba_6feb10f0"]
 # from baseline_20.csv
+# BASELINE = {
+#     "6bba_207c6aaf": 0.6565,
+#     "6bba_57b7cc1e": 0.6617,
+#     "6bba_6feb10f0": 0.8065,
+# }
 BASELINE = {
-    "6bba_207c6aaf": 0.6565,
-    "6bba_57b7cc1e": 0.6617,
-    "6bba_6feb10f0": 0.8065,
+    "6bba_207c6aaf": 0.7351,
+    "6bba_6feb10f0": 0.8262,
 }
-
 sys.path.insert(0, ".")
 from scripts.evaluate import (  # noqa: E402
     open_dataset, compute_metric, node_recall, _read_estimated_n_total,
