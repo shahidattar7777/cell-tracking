@@ -95,7 +95,7 @@ a 21× range, standard deviation 82% of the mean. Only two stem prefixes
 
 ![tracks](vendor/repo/charts/tracks.gif)
 
-*The 40 longest-surviving lineages on `6bba_207c6aaf`, max-intensity projection
+*The 5 longest-surviving lineages on `6bba_207c6aaf`, max-intensity projection
 along z, 18-frame trails, one colour per lineage. Faint dots are the other
 ~200 detections per frame. The coherent lean of the trails is the tissue drift
 quantified in [§8](#8-six-negative-results) — 74% of all cell motion in this
