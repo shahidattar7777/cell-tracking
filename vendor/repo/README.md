@@ -6,7 +6,11 @@
 ![leaderboard](https://img.shields.io/badge/leaderboard-0.884-0969da)
 ![validation](https://img.shields.io/badge/local%20validation%20(20%20videos)-0.890-1a7f37)
 ![detection](https://img.shields.io/badge/node%20recall-0.985-1a7f37)
-![hypotheses](https://img.shields.io/badge/hypotheses-5%20refuted%20·%201%20confirmed-8c959f)
+![hypotheses](https://img.shields.io/badge/hypotheses-6%20refuted%20·%201%20confirmed-8c959f)
+
+**Biohub "Cell Tracking During Development" (Kaggle).** Learning-first rebuild:
+every function typed and understood rather than pasted. The diagnosis is the
+deliverable; the score improvement is a by-product of it.
 
 ---
 
@@ -25,11 +29,11 @@ Reading the code rather than sweeping it turned up two structural findings:
    another. This is the largest lever in the pipeline and it had never been
    swept, because the threshold above made it inert.
 
-Acting on both: **0.866 → 0.884**, validated on 20 videos first.
+Acting on both: **0.866 → 0.884**, validated on 20 videos before submitting.
 
-Five further hypotheses were tested and refuted — each decided by measurement
-before any implementation. The refutations are the more useful half of this
-document.
+Six further hypotheses were tested and refuted, each decided by a measurement
+costing hours rather than an implementation costing days. The refutations are
+the more useful half of this document.
 
 ![hypotheses](charts/hypotheses.png)
 
@@ -86,6 +90,17 @@ a 21× range, standard deviation 82% of the mean. Only two stem prefixes
       ▼   .geff lineage graph
 ```
 
+**Final configuration:** `threshold = 0.3`, `ilp_appearance_weight = 2.0`,
+`ilp_disappearance_weight = 2.0`, `pool_kernel_um = 3.0`, `--use-ilp`.
+
+![tracks](charts/tracks.gif)
+
+*The 40 longest-surviving lineages on `6bba_207c6aaf`, max-intensity projection
+along z, 18-frame trails, one colour per lineage. Faint dots are the other
+~200 detections per frame. The coherent lean of the trails is the tissue drift
+quantified in [§8](#8-six-negative-results) — 74% of all cell motion in this
+video is bulk flow rather than individual movement.*
+
 ---
 
 ## Findings
@@ -96,7 +111,8 @@ Across the 20-video validation set, **mean node recall 0.9927** (min 0.948).
 A perfect detector would recover at most ~3.5% of edge mass on a typical video
 — each missed node destroys at most two edges. The observed loss was 9–13%.
 
-**Replacing the detector cannot reach most of the gap.**
+**Replacing the detector cannot reach most of the gap.** This inverted the
+premise the project started from.
 
 ### 2. Greedy assignment was discarding usable scores
 
@@ -134,54 +150,9 @@ Two consequences:
 
 Lowering the threshold to 0.3 moved the score by nothing on its own (TP +5,
 FP +6). Its value was making §5 possible. 0.3 is optimal: 0.5 collapses
-in-degree, and 0.2 and 0.1 are both worse ([§7](#7-five-negative-results)).
+in-degree, and 0.2 and 0.1 are both worse ([§8](#8-six-negative-results)).
 
-### 4. Three distinct failure mechanisms
-
-![taxonomy](charts/failure_taxonomy.png)
-
-Every missed edge on `6bba_207c6aaf` was traced to what the model did instead.
-
-**STOLEN (43/83).** The true target was claimed by a *different, nearer*
-source. The geometry is stark — in the largest subgroup, median distance from
-the true parent is **9.61 µm** against the claimant's **3.98 µm**. Notably the
-claimant often wins with a *lower* probability than the true parent achieved
-elsewhere: the greedy loop processes candidates in global probability order, so
-whoever arrives first takes the target.
-
-**ORPHANED (18/83).** Nothing claimed the true target at all. The true source
-still had a free child slot. The only way this happens is the true edge scoring
-below threshold on its own merits — a pure scoring failure with no competition
-involved.
-
-**Detection (14/83)** and **other (8/83)**, the latter being targets claimed by
-a source *farther* away than the true parent, which distance does not explain.
-
-The overall distance signature:
-
-![displacement](charts/displacement.png)
-
-| | |
-|---|---|
-| chose a **nearer** node | 50 / 67 |
-| chose a farther node | 17 / 67 (lower confidence) |
-| median true distance | 6.08 µm |
-| median chosen distance | 3.64 µm |
-| true partner beyond the 7 µm matching cutoff | 13 / 67 |
-
-That last row rules something out: for 81% of failures the true edge was well
-within range. **This is a scoring and competition failure, not a
-candidate-generation failure** — which is what made the gate experiments in §7
-worth running, and what made them fail.
-
-And the scorer is *not* distance-blind. Its true positives track the GT
-displacement distribution almost exactly (median 3.25 vs 2.96 µm, p90 6.08 vs
-6.09), with 66 correct links beyond 5 µm and 20 beyond 7 µm, out to 9.61 µm.
-`corr(edge_prob, edge_dist) = −0.379` — a real but moderate preference, not a
-range limit. The model *can* select distant partners; it mis-breaks ties when a
-closer plausible decoy exists.
-
-### 5. ILP continuity costs — the main result
+### 4. ILP continuity costs — the main result
 
 `--ilp-appearance-weight` and `--ilp-disappearance-weight` both default to
 **0.1**. Starting and ending tracks is nearly free.
@@ -201,7 +172,11 @@ Recall is recovered **without paying in precision** — FP falls alongside FN.
 Past 2.0 the mechanism reverses: the solver excludes real cells it cannot fit
 into a continuous track, and node recall collapses.
 
-### 6. Validated across 20 videos
+Runtime also matters here. At weight 5.0 the solve went from 5 minutes to over
+two hours per video — same graph, tighter constraints, exponentially larger
+branch-and-bound tree. The lever is capped by tractability as well as by score.
+
+### 5. Validated across 20 videos
 
 ![validation](charts/validation_20.png)
 
@@ -219,12 +194,66 @@ All four regressions are `44b6`; 12 of 13 `6bba` videos improved. If the two
 prefixes are two embryos, a continuity prior tuned on one may not transfer
 cleanly to the other — untested, but the pattern is consistent.
 
-**Leaderboard: 0.866 → 0.884.**
+**Leaderboard: 0.866 → 0.884.** Local micro-average tracked it to 0.006.
 
-### 7. Five negative results
+### 6. What is left, and why it is hard
 
-Each was decided by a measurement that cost hours, before any implementation
-that would have cost days.
+![taxonomy](charts/failure_taxonomy.png)
+
+Every missed edge at the **validated** config was traced to what the model did
+instead. 56 remain on the worst video:
+
+**STOLEN — 22 of 56, and 22 of the 26 where both cells were detected.** The
+true target was claimed by a *different, nearer* source. Median distance from
+the true parent is **10.41 µm** against the claimant's **3.98 µm**. The telling
+detail: the claimant wins with p = **0.536** while the true source scored
+**0.644** on the edge it settled for. The true parent had a better score
+available elsewhere and still lost its correct target to a weaker claim.
+
+This is not an ordering artifact. The ILP is a stronger global optimiser than
+Hungarian assignment and it chose this. The scorer genuinely rates a nearby
+wrong parent above the correct distant one.
+
+**Detection — 30 of 56.** Note this is now the *largest* bucket, and it is
+partly self-inflicted: the weight-2.0 solver drops nodes it cannot fit into a
+continuous track (recall 0.981 → 0.954). That trade is net positive overall,
+but it shifts the failure composition toward detection.
+
+**ORPHANED — 1 of 56**, down from 18 at weight 0.1. Those were true edges
+scoring below threshold; the continuity costs made the solver willing to take
+them anyway. This retrospectively explains why lowering the threshold ([§8](#8-six-negative-results))
+did not help — the solver had already recovered what was recoverable there.
+
+### 7. The scorer is not distance-blind — it mis-breaks ties
+
+![displacement](charts/displacement.png)
+
+*(scatter from the weight-0.1 baseline, where the failure set is larger and the
+pattern is clearest)*
+
+| | |
+|---|---|
+| chose a **nearer** node | 50 / 67 |
+| chose a farther node | 17 / 67 (lower confidence) |
+| median true distance | 6.08 µm |
+| median chosen distance | 3.64 µm |
+| true partner beyond the 7 µm matching cutoff | 13 / 67 |
+
+That last row rules something out: for 81% of failures the true edge was well
+within range. **This is a scoring and competition failure, not a
+candidate-generation failure.**
+
+And the scorer handles distance fine. Its true positives track the GT
+displacement distribution almost exactly (median 3.25 vs 2.96 µm, p90 6.08 vs
+6.09), with 66 correct links beyond 5 µm and 20 beyond 7 µm, out to 9.61 µm.
+`corr(edge_prob, edge_dist) = −0.379` — a real but moderate preference, not a
+range limit. The model *can* select distant partners; it mis-breaks ties when a
+closer plausible decoy exists.
+
+### 8. Six negative results
+
+Each was decided by a measurement costing hours, before an implementation that
+would have cost days.
 
 <details>
 <summary><b>1 · The anisotropy hypothesis — refuted</b></summary>
@@ -239,8 +268,8 @@ distance two ways:
 ```
 
 Exactly constant. Distances are **isotropic**, in downsampled units where
-1 unit = 1.625 µm. The distance preference is a genuine modelling behaviour,
-not an implementation error.
+1 unit = 1.625 µm. The distance preference is genuine modelling behaviour, not
+an implementation error.
 </details>
 
 <details>
@@ -278,7 +307,7 @@ cells at the same radius. Tested on ground truth:
 ```
 
 One-frame velocity is barely better than chance on the failing video. Longer
-windows helped — k=1→k=2 jumps 54%→66%, then plateaus, a signature of voxel
+windows helped — k=1→k=2 jumps 54%→66% then plateaus, a signature of voxel
 quantisation noise rather than long-range persistence — and at k=3 the trade
 turns positive (+16/−3).
 
@@ -302,23 +331,17 @@ to the velocity-predicted position than the competitor the model chose.
    5    22/45  (49%)      median margin  −0.33
 ```
 
-Chance, at every window, with a slightly *negative* margin — the chosen
-competitor is marginally more motion-consistent than the true partner. And this
-is the ceiling: it uses ground-truth velocity, where the real pipeline would
-use its own sometimes-wrong assignments.
-
-Raw distance discriminates these pairs (71–73%). Motion does not (47–50%).
-**The decoys are genuinely ambiguous** — equally consistent with where the cell
-was heading.
+Chance at every window, with a slightly *negative* margin. And this is the
+ceiling: it uses ground-truth velocity, where the real pipeline would use its
+own sometimes-wrong assignments.
 </details>
 
 <details>
 <summary><b>5 · Lowering the threshold below 0.3 — refuted</b></summary>
 
-The 18 orphaned targets in §4 must have scored below threshold, so lowering it
+The orphaned targets in §6 must have scored below threshold, so lowering it
 should admit them. And the regime had changed: the previous 0.5 → 0.3 test
-predated the continuity costs, when the solver had no reason to reject spurious
-links.
+predated the continuity costs.
 
 ```
   threshold   ΔTP   ΔFP   mean Δ edge Jaccard
@@ -327,12 +350,51 @@ links.
 ```
 
 The extra candidates are almost entirely wrong, *and* they displace previously
-correct assignments — TP falls. Those 18 true edges are not separable by
+correct assignments — TP falls. Those true edges are not separable by
 threshold: their scores are not ranked above the noise around them. A
 calibration fix would not help; the ordering itself is wrong down there.
-
-0.3 is now bracketed on both sides and confirmed optimal.
 </details>
+
+<details>
+<summary><b>6 · A tissue-drift term — refuted, and the most informative failure</b></summary>
+
+Per-cell velocity failed, but a zebrafish embryo is not a bag of independently
+wandering cells: epiboly and convergent extension produce **coherent flow**
+shared across whole regions. Per-cell velocity is noisy; a drift shared by
+hundreds of cells survives averaging.
+
+The drift is real and large:
+
+```
+                    mean drift vector (z,y,x) µm     |mean|   mean|.|   coherence
+  6bba_207c6aaf      [−1.257  −0.446  −2.120]         2.504    3.400      0.737
+  44b6_d78e09d9      [+0.746  +0.024  +1.812]         1.960    2.456      0.798
+```
+
+**74–80% of all cell motion is bulk tissue flow**, not individual movement.
+The two videos drift in opposite directions — consistent with two embryos at
+different orientations.
+
+But on the failures it is **anti**-predictive:
+
+```
+  FLIPPABLE (true partner nearer to the drift-predicted position)   3/18  (17%)
+  residual TRUE partner   7.35 µm
+  residual CHOSEN decoy   3.49 µm      median margin −4.04 µm
+```
+
+The explanation is a selection effect, and it is the real finding. **Cells that
+move with the flow are the easy ones** — proximity already handles them, so
+they sit among the true positives and never enter the failure set. What
+survives is precisely the cells moving *against* the population flow.
+
+The residual errors are, by construction, the motion outliers. An explicit
+drift term would reinforce the decoy on exactly these cases while changing
+nothing about the links already correct. Inverting it ("prefer the
+drift-anomalous candidate") would break the majority to fix a handful.
+</details>
+
+![drift](charts/drift.png)
 
 ---
 
@@ -340,13 +402,8 @@ calibration fix would not help; the ordering itself is wrong down there.
 
 **The ILP is the bottleneck and does not scale gracefully.** Moving the UNet to
 GPU cut inference to under a minute; SCIP still runs on CPU and now dominates.
-At continuity weight 5.0 the solve went from 5 minutes to over two hours per
-video — same graph, tighter constraints, exponentially larger search tree. On
-16 GB RAM the largest validation video (65k estimated nodes) could not be
-solved at all.
-
-This caps the lever independently of score, and is the argument for Ultrack's
-windowed formulation.
+On 16 GB RAM the largest validation video (65k estimated nodes) could not be
+solved at all. This is the argument for Ultrack's windowed formulation.
 
 **Precision is not free.** A common reading of this metric is that unmatched
 predictions carry no penalty. The reference implementation is narrower: an edge
@@ -423,42 +480,61 @@ the same axes. **Charts are a correctness check, not just presentation.**
 **HOCT** (Bragantini, Theodoro & Royer, 2026) reaches a compatible conclusion
 from the opposite direction: candidate-graph topology carries little usable
 signal, because edges sharing a node have near-random label agreement
-(adjusted homophily 0.01 ± 0.04 on the line graph). Their answer is an
-edge-centric transformer where candidate links attend to one another under a 3D
-geometric prior — including a line-to-line distance bias distinguishing two
-links running parallel (coherent motion) from two that nearly intersect
-(a collision).
+(adjusted homophily 0.01 ± 0.04 on the line graph; for each true edge only 29%
+of its co-incident edges are also true). Their answer is an edge-centric
+transformer where candidate links attend to one another under a 3D geometric
+prior — a line-to-line distance bias distinguishing two links running parallel
+(coherent motion) from two that nearly intersect (a collision).
 
 Their softmax is the principled version of the bottleneck in §3: normalised per
 target *and* per temporal gap, with a constant in the denominator acting as an
 implicit "no parent" option, so a link need not exceed 0.5 to survive. The ILP
 decides instead of the threshold.
 
-The STOLEN mechanism in §4 is an independent measurement of why edge-relational
-context should matter: candidate link A→B is scored with no knowledge that C→B
-exists. The softmax is the only thing coupling them, and it couples them by
-forcing competition rather than by letting them inform each other.
+**The STOLEN mechanism in §6 is an independent measurement of why
+edge-relational context should matter:** candidate link A→B is scored with no
+knowledge that C→B exists. The softmax is the only thing coupling them, and it
+couples them by forcing competition rather than by letting them inform each
+other. That conclusion was reached here from failure analysis on a dataset
+their paper does not cover.
+
+Worth noting from their ablation (their Table 2): an Edge-Transformer *without*
+the geometric bias scores 0.922 against HOCT's 0.926. **Most of the gain is
+edge-centricity itself**; the line-to-line encoding adds 0.004.
 
 ---
 
 ## Where this leaves the problem
 
-The remaining 83 missed edges on the worst video are not one problem. Position
-does not separate the decoys from the truth; trajectory does not either, at any
-window. What is left:
+The residual failures are not one problem, and three of the obvious signals are
+now ruled out on measurement:
+
+| signal | separates the decoys? |
+|---|---|
+| position / distance | **no** — the decoy is nearer in 71–73% of failures |
+| per-cell velocity (k = 1…5) | **no** — 47–50%, chance |
+| population tissue drift | **no** — 17%, anti-predictive by selection |
+
+What remains untested:
 
 - **Appearance.** `predict_edges` already receives 32-channel UNet features for
   both endpoints, so the information is present and evidently underweighted
-  rather than absent. Measuring whether feature similarity separates true
-  partners from decoys would say whether the ceiling is the representation or
-  the data.
-- **Edge-relational context** for the 43 STOLEN cases, which by construction
+  rather than absent — *if* it is there at all. Worth noting the blocker:
+  HOCT's 19 input features are **segmentation-derived** (equivalent diameter,
+  3×3 inertia tensor — roughly ten of the nineteen describe shape), and this
+  pipeline produces bare local-max centroids with no mask. Half of that input
+  dimensionality does not exist here. A segmentation stage may be the real
+  prerequisite for anything further.
+- **Edge-relational context** for the 22 STOLEN cases, which by construction
   cannot be fixed by scoring pairs independently.
-- **The 8 "other" cases**, where a *farther* source claimed the target —
-  unexplained by any geometric account.
-- **Line-graph homophily** has not been measured on this dataset.
+- **Line-graph homophily** on this dataset, to check whether HOCT's
+  `H_adj ≈ 0` holds here too.
+- **The frame-clustering of failures** — on 44b6 they concentrate after frame
+  90 with nothing before 67. Drift does not explain it: the trend is positive
+  on one video (+0.24) and negative on the other (−0.51).
 
 ---
 
-*Built as a learning exercise: every function typed and understood rather than
-pasted. The diagnosis is the deliverable.*
+*Every hypothesis in this document was tested before it was built. Five of the
+six refutations cost less than a day each; the implementations they prevented
+would have cost weeks.*
