@@ -93,7 +93,7 @@ a 21× range, standard deviation 82% of the mean. Only two stem prefixes
 **Final configuration:** `threshold = 0.3`, `ilp_appearance_weight = 2.0`,
 `ilp_disappearance_weight = 2.0`, `pool_kernel_um = 3.0`, `--use-ilp`.
 
-![tracks](charts/tracks.gif)
+![tracks](vendor/repo/charts/tracks.gif)
 
 *The 40 longest-surviving lineages on `6bba_207c6aaf`, max-intensity projection
 along z, 18-frame trails, one colour per lineage. Faint dots are the other
@@ -157,7 +157,7 @@ in-degree, and 0.2 and 0.1 are both worse ([§8](#8-six-negative-results)).
 `--ilp-appearance-weight` and `--ilp-disappearance-weight` both default to
 **0.1**. Starting and ending tracks is nearly free.
 
-![sweep](charts/sweep_curve.png)
+![sweep](vendor/repo/charts/sweep_curve.png)
 
 ```
  weight    TP    FP    FN   node recall   edge Jaccard
@@ -178,7 +178,7 @@ branch-and-bound tree. The lever is capped by tractability as well as by score.
 
 ### 5. Validated across 20 videos
 
-![validation](charts/validation_20.png)
+![validation](vendor/repo/charts/validation_20.png)
 
 | | baseline | weight 2.0 | Δ |
 |---|---|---|---|
@@ -198,7 +198,7 @@ cleanly to the other — untested, but the pattern is consistent.
 
 ### 6. What is left, and why it is hard
 
-![taxonomy](charts/failure_taxonomy.png)
+![taxonomy](vendor/repo/charts/failure_taxonomy.png)
 
 Every missed edge at the **validated** config was traced to what the model did
 instead. 56 remain on the worst video:
@@ -226,7 +226,7 @@ did not help — the solver had already recovered what was recoverable there.
 
 ### 7. The scorer is not distance-blind — it mis-breaks ties
 
-![displacement](charts/displacement.png)
+![displacement](vendor/repo/charts/displacement.png)
 
 *(scatter from the weight-0.1 baseline, where the failure set is larger and the
 pattern is clearest)*
@@ -394,7 +394,7 @@ nothing about the links already correct. Inverting it ("prefer the
 drift-anomalous candidate") would break the majority to fix a handful.
 </details>
 
-![drift](charts/drift.png)
+![drift](vendor/repo/charts/drift.png)
 
 ---
 
